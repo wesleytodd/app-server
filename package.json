@@ -1,0 +1,30 @@
+{
+  "name": "app-server",
+  "version": "1.0.0",
+  "description": "An express server with logging, zero-downtime, and common-middleware",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wesleytodd/app-server.git"
+  },
+  "keywords": [
+    "express",
+    "server"
+  ],
+  "author": "Wes Todd",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wesleytodd/app-server/issues"
+  },
+  "homepage": "https://github.com/wesleytodd/app-server",
+  "dependencies": {
+    "compression": "^1.4.3",
+    "errorhandler": "^1.3.5",
+    "express": "^4.12.3",
+    "express-graceful-exit": "^0.1.0",
+    "logtastic": "^2.0.0"
+  }
+}
