@@ -49,7 +49,7 @@ util.inherits(Server, EventEmitter);
 
 Server.defaultOptions = {
 	port: 3000,
-	hostname: 'localhost',
+	hostname: null,
 	logDir: 'log',
 	logger: logtastic,
 	trustProxy: true,
