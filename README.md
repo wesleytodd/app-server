@@ -8,6 +8,8 @@ A wrapper around a common configuration for an express application server.  This
 - [Naught](https://www.npmjs.com/package/naught)
 - [Express Graceful Exit](https://www.npmjs.com/package/express-graceful-exit)
 - [Logtastic](https://www.npmjs.com/package/logtastic)
+- [Consolidate](https://www.npmjs.com/package/consolidate)
+- [Cookie Parser](https://www.npmjs.com/package/cookie-parser)
 
 It setup sane defaults for these modules and exposes simple confiuration options for tweaking.  But overall it is an opinionated method for setting up an express service.
 
@@ -22,11 +24,24 @@ $ npm install --save app-server
 ```javascript
 var Server = require('app-server');
 
-var server = new Server();
+// All these options are set to their default values
+var server = new Server({
+	port: 3000,
+	hostname: null,
+	logDir: 'log',
+	logger: logtastic, // An instance of Logtastic
+	trustProxy: true,
+	compress: true,
+	errorHandler: true,
+	parseCookies: false,
+	viewDir: null, // Full path to views
+	viewEngine: null, // One of the modules provied by consolidate
+	viewEngineSuffix: 'html'
+});
 
 // Setup routes
 server.app.post('/', function(req, res) {
-	res.status(200).json({hello: 'world'})
+	res.status(200).json({hi: 'planet'});
 });
 
 // Start the server

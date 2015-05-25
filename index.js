@@ -4,6 +4,8 @@ var EventEmitter = require('events').EventEmitter,
 	logtastic = require('logtastic'),
 	express = require('express'),
 	compress = require('compression'),
+	consolidate = require('consolidate'),
+	cookieParser = require('cookie-parser'),
 	errorHandler = require('errorhandler'),
 	gracefulExit = require('express-graceful-exit');
 
@@ -17,6 +19,10 @@ var Server = module.exports = function(options) {
 	options.trustProxy = typeof options.trustProxy !== 'undefined' ? options.trustProxy : Server.defaultOptions.trustProxy;
 	options.compress = typeof options.compress !== 'undefined' ? options.compress : Server.defaultOptions.compress;
 	options.errorHandler = typeof options.errorHandler !== 'undefined' ? options.errorHandler : Server.defaultOptions.errorHandler;
+	options.parseCookies = typeof options.parseCookies !== 'undefined' ? options.parseCookies : Server.defaultOptions.parseCookies;
+	options.viewDir = options.viewDir || Server.defaultOptions.viewDir;
+	options.viewEngine = options.viewEngine || Server.defaultOptions.viewEngine;
+	options.viewEngineSuffix = options.viewEngineSuffix || Server.defaultOptions.viewEngineSuffix;
 	this.options = options;
 
 	// Where we will keep the server
@@ -38,11 +44,21 @@ var Server = module.exports = function(options) {
 	// Log errors
 	this.app.on('clientError', this.logger.error);
 
+	// Setup the views
+	if (options.viewDir && options.viewEngine) {
+		this.app.engine('html', consolidate[options.viewEngine]);
+		this.app.set('view engine', options.viewEngineSuffix);
+		this.app.set('views', options.viewDir);
+	}
+
 	// Setup middleware
 	this.app.use(gracefulExit.middleware(this.app));
 	this.app.use(this.logger.middleware());
 	if (options.compress) {
 		this.app.use(compress());
+	}
+	if (options.parseCookies) {
+		this.app.use(cookieParser());
 	}
 };
 util.inherits(Server, EventEmitter);
@@ -54,7 +70,11 @@ Server.defaultOptions = {
 	logger: logtastic,
 	trustProxy: true,
 	compress: true,
-	errorHandler: true
+	errorHandler: true,
+	parseCookies: false,
+	viewDir: null,
+	viewEngine: null,
+	viewEngineSuffix: 'html'
 };
 
 Server.prototype.start = function() {
