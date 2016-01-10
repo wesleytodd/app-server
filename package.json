@@ -4,7 +4,8 @@
   "description": "An express server with logging, zero-downtime, and common-middleware",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "babel": "babel src --out-dir lib",
+    "test": "npm run babel && happiness"
   },
   "repository": {
     "type": "git",
@@ -19,14 +20,27 @@
   "bugs": {
     "url": "https://github.com/wesleytodd/app-server/issues"
   },
+  "happiness": {
+    "ignore": [
+      "lib"
+    ]
+  },
   "homepage": "https://github.com/wesleytodd/app-server",
   "dependencies": {
+    "body-parser": "^1.14.2",
     "compression": "^1.4.3",
     "consolidate": "^0.12.1",
     "cookie-parser": "^1.3.5",
+    "defined": "^1.0.0",
     "errorhandler": "^1.3.5",
     "express": "^4.12.3",
     "express-graceful-exit": "^0.1.0",
     "logtastic": "^2.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.4.0",
+    "babel-preset-es2015": "^6.3.13",
+    "happiness": "git+ssh://git@github.com/JedWatson/happiness.git#standard-fork",
+    "in-publish": "^2.0.0"
   }
 }
